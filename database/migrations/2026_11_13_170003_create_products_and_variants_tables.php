@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('slug')->unique();
             $table->string('brand', 100)->nullable()->index();
             $table->text('short_description')->nullable();
-            $table->longText('description');
+            $table->longText('description')->nullable();
             $table->decimal('base_price', 12, 2)->index();
             $table->decimal('sale_price', 12, 2)->nullable()->index();
             $table->string('status', 30)->default('pending_moderation')->index(); // draft, pending_moderation, approved, rejected, archived
@@ -38,7 +38,7 @@ return new class extends Migration
             $table->foreignId('product_id')->constrained('products')->cascadeOnDelete();
             $table->string('sku', 100)->unique();
             $table->string('title'); // e.g. "Space Black / 256GB"
-            $table->json('attributes'); // {"color": "Space Black", "storage": "256GB"}
+            $table->json('attributes')->nullable(); // {"color": "Space Black", "storage": "256GB"}
             $table->decimal('price', 12, 2);
             $table->decimal('compare_at_price', 12, 2)->nullable();
             $table->timestamps();

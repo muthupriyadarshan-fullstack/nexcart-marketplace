@@ -1,0 +1,409 @@
+openapi: 3.0.3
+info:
+  title: NexCart Multi-Vendor E-Commerce API
+  description: |
+    Production-grade Multi-Vendor E-Commerce Marketplace RESTful API.
+    Supports Customer, Vendor, Super Admin, and Support Staff roles.
+    Includes atomic stock reservation, multi-vendor checkout split, platform commission calculation,
+    and Razorpay payment gateway integration with idempotent webhook processing.
+  version: 1.0.0
+servers:
+  - url: http://localhost:8000/api/v1
+    description: Local Development Server
+  - url: https://api.nexcart.example.com/api/v1
+    description: Production Environment
+
+tags:
+  - name: Authentication
+    description: User registration, vendor onboarding, login, session management
+  - name: Catalog
+    description: Public product discovery, category hierarchies, search, filters
+  - name: Customer Cart
+    description: Shopping cart, item adjustments, coupon validation
+  - name: Customer Wishlist
+    description: Saved items for later purchase
+  - name: Customer Checkout & Orders
+    description: Multi-vendor checkout initialization, payment verification, order status
+  - name: Customer Reviews & Returns
+    description: Verified product reviews and return request tracking
+  - name: Vendor Dashboard & Store
+    description: Vendor store settings, analytics, payout requests
+  - name: Vendor Catalog & Inventory
+    description: Vendor product CRUD, variant management, stock levels, alerts
+  - name: Vendor Fulfillment
+    description: Vendor order item tracking, shipping label and carrier updates
+  - name: Admin Platform Governance
+    description: Super Admin moderation, vendor approvals, platform fees, coupons, audits
+  - name: Webhooks
+    description: Payment gateway asynchronous callbacks
+
+components:
+  securitySchemes:
+    SanctumBearer:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    ApiResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        message:
+          type: string
+          example: Request processed successfully.
+        data:
+          type: object
+
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: Rajesh Sharma
+        email:
+          type: string
+          example: customer@nexcart.in
+        phone:
+          type: string
+          example: "+919876543210"
+        roles:
+          type: array
+          items:
+            type: string
+          example: ["customer"]
+
+    Category:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 3
+        name:
+          type: string
+          example: Consumer Electronics
+        slug:
+          type: string
+          example: consumer-electronics
+        parent_id:
+          type: integer
+          nullable: true
+          example: null
+        products_count:
+          type: integer
+          example: 142
+
+    ProductSummary:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 101
+        name:
+          type: string
+          example: Apple iPhone 15 Pro (256 GB) - Natural Titanium
+        slug:
+          type: string
+          example: apple-iphone-15-pro-256gb-natural-titanium
+        brand:
+          type: string
+          example: Apple
+        base_price:
+          type: number
+          format: float
+          example: 129990.00
+        sale_price:
+          type: number
+          format: float
+          nullable: true
+          example: 124900.00
+        currency:
+          type: string
+          example: INR
+        rating_avg:
+          type: number
+          format: float
+          example: 4.8
+        rating_count:
+          type: integer
+          example: 34
+        store_name:
+          type: string
+          example: Apex Electronics India
+        primary_image:
+          type: string
+          example: "https://images.unsplash.com/photo-1695048133142-1a20484d2569"
+
+    CartItem:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 12
+        product_variant_id:
+          type: integer
+          example: 45
+        product_name:
+          type: string
+          example: Apple iPhone 15 Pro
+        variant_title:
+          type: string
+          example: 256GB / Natural Titanium
+        store_id:
+          type: integer
+          example: 2
+        store_name:
+          type: string
+          example: Apex Electronics India
+        price:
+          type: number
+          example: 124900.00
+        quantity:
+          type: integer
+          example: 1
+        subtotal:
+          type: number
+          example: 124900.00
+        in_stock:
+          type: boolean
+          example: true
+
+    Order:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 801
+        order_number:
+          type: string
+          example: "NEX-202611-9281"
+        status:
+          type: string
+          enum: [pending_payment, paid, processing, partially_shipped, shipped, delivered, cancelled, refunded]
+          example: paid
+        payment_status:
+          type: string
+          enum: [pending, authorized, captured, failed, refunded]
+          example: captured
+        subtotal:
+          type: number
+          example: 124900.00
+        discount_amount:
+          type: number
+          example: 2000.00
+        tax_amount:
+          type: number
+          example: 22122.00
+        grand_total:
+          type: number
+          example: 122900.00
+        currency:
+          type: string
+          example: INR
+        vendor_splits:
+          type: array
+          items:
+            type: object
+            properties:
+              store_id:
+                type: integer
+              store_name:
+                type: string
+              vendor_subtotal:
+                type: number
+              commission_fee:
+                type: number
+              vendor_net_earnings:
+                type: number
+              tracking_status:
+                type: string
+
+paths:
+  /auth/register:
+    post:
+      tags: [Authentication]
+      summary: Customer Registration
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [name, email, password, password_confirmation]
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+                  format: email
+                phone:
+                  type: string
+                password:
+                  type: string
+                  format: password
+                password_confirmation:
+                  type: string
+      responses:
+        '201':
+          description: User registered successfully with Sanctum token.
+
+  /auth/vendor-register:
+    post:
+      tags: [Authentication]
+      summary: Vendor Onboarding & Store Registration
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [name, email, password, store_name, company_name, tax_id_gst, bank_account_number, bank_ifsc_code]
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
+                store_name:
+                  type: string
+                store_description:
+                  type: string
+                company_name:
+                  type: string
+                tax_id_gst:
+                  type: string
+                bank_account_number:
+                  type: string
+                bank_ifsc_code:
+                  type: string
+                bank_name:
+                  type: string
+                pan_number:
+                  type: string
+      responses:
+        '201':
+          description: Vendor registered, status set to pending approval.
+
+  /auth/login:
+    post:
+      tags: [Authentication]
+      summary: User Login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, password]
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: Successfully authenticated. Returns token and user profile.
+
+  /products:
+    get:
+      tags: [Catalog]
+      summary: Search and Filter Products
+      parameters:
+        - name: q
+          in: query
+          schema:
+            type: string
+        - name: category_id
+          in: query
+          schema:
+            type: integer
+        - name: min_price
+          in: query
+          schema:
+            type: number
+        - name: max_price
+          in: query
+          schema:
+            type: number
+        - name: sort_by
+          in: query
+          schema:
+            type: string
+            enum: [latest, price_asc, price_desc, rating]
+        - name: page
+          in: query
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Paginated catalog items.
+
+  /checkout/initialize:
+    post:
+      tags: [Customer Checkout & Orders]
+      security:
+        - SanctumBearer: []
+      summary: Atomically reserve stock, calculate vendor splits, and initialize payment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [shipping_address_id, billing_address_id]
+              properties:
+                shipping_address_id:
+                  type: integer
+                billing_address_id:
+                  type: integer
+                coupon_code:
+                  type: string
+      responses:
+        '200':
+          description: Order created, stock reserved, Razorpay order initialized.
+        '422':
+          description: Insufficient stock or invalid address.
+
+  /checkout/verify:
+    post:
+      tags: [Customer Checkout & Orders]
+      security:
+        - SanctumBearer: []
+      summary: Verify Razorpay HMAC signature and confirm payment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [razorpay_order_id, razorpay_payment_id, razorpay_signature]
+              properties:
+                razorpay_order_id:
+                  type: string
+                razorpay_payment_id:
+                  type: string
+                razorpay_signature:
+                  type: string
+      responses:
+        '200':
+          description: Payment verified, order confirmed, stock permanently deducted.
+
+  /webhooks/razorpay:
+    post:
+      tags: [Webhooks]
+      summary: Idempotent Razorpay Webhook Callback
+      parameters:
+        - name: X-Razorpay-Signature
+          in: header
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Webhook received and queued/processed idempotently.
