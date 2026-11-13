@@ -1,14 +1,10 @@
 <?php
 
-use App\Models\Address;
-use App\Models\Cart;
-use App\Models\CartItem;
 use App\Models\Category;
 use App\Models\Inventory;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Payment;
-use App\Models\PaymentWebhook;
 use App\Models\Product;
 use App\Models\ProductVariant;
 use App\Models\ReturnRequest;
@@ -185,4 +181,3 @@ test('refund processing reverses commission and restocks inventory', function ()
     $item->refresh();
     expect($item->status)->toBe('refunded');
 });
-

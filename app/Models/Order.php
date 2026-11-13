@@ -104,4 +104,3 @@ class Order extends Model
         return array_values($splits);
     }
 }
-

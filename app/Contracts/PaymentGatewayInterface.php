@@ -24,4 +24,3 @@ interface PaymentGatewayInterface
      */
     public function createRefund(string $paymentId, float $amount, ?string $reason = null): array;
 }
-

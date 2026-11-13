@@ -22,4 +22,3 @@ class CheckoutInitRequest extends FormRequest
         ];
     }
 }
-

@@ -20,4 +20,3 @@ class PaymentVerifyRequest extends FormRequest
         ];
     }
 }
-

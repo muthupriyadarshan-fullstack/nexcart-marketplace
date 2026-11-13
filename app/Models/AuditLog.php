@@ -40,4 +40,3 @@ class AuditLog extends Model
         return $this->morphTo();
     }
 }
-

@@ -9,6 +9,7 @@ use Illuminate\Console\Command;
 class SendAbandonedCartReminders extends Command
 {
     protected $signature = 'nexcart:send-abandoned-cart-reminders';
+
     protected $description = 'Send queued notification reminders to customers with abandoned carts.';
 
     public function handle(): int
@@ -30,7 +31,7 @@ class SendAbandonedCartReminders extends Command
         }
 
         $this->info("Dispatched {$count} abandoned cart reminders.");
+
         return Command::SUCCESS;
     }
 }
-

@@ -27,4 +27,3 @@ class PaymentWebhook extends Model
         ];
     }
 }
-

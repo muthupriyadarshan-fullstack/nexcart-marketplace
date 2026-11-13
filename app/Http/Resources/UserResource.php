@@ -18,6 +18,7 @@ class UserResource extends JsonResource
             'roles' => $this->getRoleNames(),
             'store' => $this->when($this->vendor && $this->vendor->primaryStore, function () {
                 $store = $this->vendor->primaryStore;
+
                 return [
                     'id' => $store->id,
                     'name' => $store->name,
@@ -31,4 +32,3 @@ class UserResource extends JsonResource
         ];
     }
 }
-

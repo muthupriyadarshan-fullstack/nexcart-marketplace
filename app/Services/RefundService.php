@@ -18,8 +18,7 @@ class RefundService
         protected PaymentGatewayInterface $paymentGateway,
         protected CommissionService $commissionService,
         protected InventoryReservationService $inventoryService,
-    ) {
-    }
+    ) {}
 
     /**
      * Customer requests a return for a specific order item.
@@ -78,7 +77,7 @@ class RefundService
                 'return_id' => $returnRequest->id,
                 'order_id' => $order->id,
                 'amount' => $refundAmount,
-                'gateway_refund_id' => $gatewayResponse['id'] ?? ('rfnd_' . uniqid()),
+                'gateway_refund_id' => $gatewayResponse['id'] ?? ('rfnd_'.uniqid()),
                 'reason' => $returnRequest->reason,
                 'status' => 'processed',
                 'processed_by' => $processor->id,
@@ -133,4 +132,3 @@ class RefundService
         });
     }
 }
-

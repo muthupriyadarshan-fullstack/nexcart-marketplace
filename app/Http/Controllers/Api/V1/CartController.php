@@ -129,4 +129,3 @@ class CartController extends BaseApiController
         return $this->respondSuccess(new CartResource($cart), 'Coupon removed.');
     }
 }
-

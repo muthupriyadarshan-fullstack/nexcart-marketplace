@@ -44,4 +44,3 @@ class Refund extends Model
         return $this->belongsTo(User::class, 'processed_by');
     }
 }
-

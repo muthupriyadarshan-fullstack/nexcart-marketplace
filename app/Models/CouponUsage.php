@@ -39,4 +39,3 @@ class CouponUsage extends Model
         return $this->belongsTo(Order::class);
     }
 }
-

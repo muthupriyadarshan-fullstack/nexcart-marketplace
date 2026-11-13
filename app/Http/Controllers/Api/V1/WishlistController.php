@@ -32,6 +32,7 @@ class WishlistController extends BaseApiController
 
         if ($existing) {
             $existing->delete();
+
             return $this->respondSuccess(['in_wishlist' => false], 'Removed from wishlist.');
         }
 
@@ -43,4 +44,3 @@ class WishlistController extends BaseApiController
         return $this->respondSuccess(['in_wishlist' => true], 'Added to wishlist.');
     }
 }
-

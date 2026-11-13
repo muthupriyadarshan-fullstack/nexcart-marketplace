@@ -2,7 +2,6 @@
 
 use App\Models\Category;
 use App\Models\Product;
-use App\Models\ProductVariant;
 use App\Models\Store;
 use App\Models\User;
 use App\Models\Vendor;
@@ -52,7 +51,7 @@ test('vendor can create product with variants and initial stock', function () {
                 'title' => 'Standard Black',
                 'price' => 12999.00,
                 'quantity' => 25,
-            ]
+            ],
         ],
     ]);
 
@@ -106,4 +105,3 @@ test('vendor cannot modify or access another vendors product', function () {
     $response->assertStatus(404);
     $this->assertDatabaseHas('products', ['id' => $prod1->id]);
 });
-

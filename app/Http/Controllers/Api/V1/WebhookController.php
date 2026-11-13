@@ -11,8 +11,7 @@ class WebhookController extends BaseApiController
 {
     public function __construct(
         protected WebhookHandlerService $webhookHandler
-    ) {
-    }
+    ) {}
 
     public function handleRazorpay(Request $request): JsonResponse
     {
@@ -36,4 +35,3 @@ class WebhookController extends BaseApiController
         }
     }
 }
-

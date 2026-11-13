@@ -25,4 +25,3 @@ class VendorProfile extends Model
         return $this->belongsTo(Vendor::class);
     }
 }
-

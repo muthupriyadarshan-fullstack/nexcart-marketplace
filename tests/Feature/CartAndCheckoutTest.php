@@ -4,7 +4,6 @@ use App\Models\Address;
 use App\Models\Cart;
 use App\Models\CartItem;
 use App\Models\Category;
-use App\Models\Coupon;
 use App\Models\Inventory;
 use App\Models\Product;
 use App\Models\ProductVariant;
@@ -168,4 +167,3 @@ test('payment verification permanently deducts reserved stock and clears cart', 
     $cart->refresh();
     expect($cart->items()->count())->toBe(0);
 });
-

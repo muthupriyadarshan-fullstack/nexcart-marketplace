@@ -49,4 +49,3 @@ class Inventory extends Model
         return $this->available_quantity <= $this->low_stock_threshold;
     }
 }
-

@@ -13,8 +13,9 @@ class InventoryReservationService
     /**
      * Atomically reserve stock for requested items using SELECT ... FOR UPDATE.
      *
-     * @param array<int, int> $variantQuantities Mapping of product_variant_id => quantity
-     * @param string $referenceId Order number or reservation reference
+     * @param  array<int, int>  $variantQuantities  Mapping of product_variant_id => quantity
+     * @param  string  $referenceId  Order number or reservation reference
+     *
      * @throws Exception If stock is insufficient
      */
     public function reserveStock(array $variantQuantities, string $referenceId): void
@@ -59,8 +60,8 @@ class InventoryReservationService
     /**
      * Permanently deduct reserved stock once payment is confirmed.
      *
-     * @param array<int, int> $variantQuantities Mapping of product_variant_id => quantity
-     * @param string $referenceId Order number
+     * @param  array<int, int>  $variantQuantities  Mapping of product_variant_id => quantity
+     * @param  string  $referenceId  Order number
      */
     public function deductStock(array $variantQuantities, string $referenceId): void
     {
@@ -95,8 +96,7 @@ class InventoryReservationService
     /**
      * Release reserved stock back to available inventory on checkout abort or expiration.
      *
-     * @param array<int, int> $variantQuantities
-     * @param string $referenceId
+     * @param  array<int, int>  $variantQuantities
      */
     public function releaseStock(array $variantQuantities, string $referenceId): void
     {
@@ -151,4 +151,3 @@ class InventoryReservationService
         });
     }
 }
-

@@ -505,7 +505,7 @@ class MarketplaceDemoSeeder extends Seeder
         // -------------------------------------------------------------
         $cart = Cart::create([
             'user_id' => $customer1->id,
-            'session_id' => 'sess_' . Str::random(24),
+            'session_id' => 'sess_'.Str::random(24),
         ]);
 
         CartItem::create([
@@ -641,4 +641,3 @@ class MarketplaceDemoSeeder extends Seeder
         ]);
     }
 }
-

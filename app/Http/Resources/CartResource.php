@@ -14,6 +14,7 @@ class CartResource extends JsonResource
             'items' => $this->items->map(function ($item) {
                 $variant = $item->variant;
                 $product = $variant?->product;
+
                 return [
                     'id' => $item->id,
                     'product_id' => $product?->id,
@@ -48,4 +49,3 @@ class CartResource extends JsonResource
         ];
     }
 }
-

@@ -40,4 +40,3 @@ class Commission extends Model
         return $this->belongsTo(OrderItem::class);
     }
 }
-

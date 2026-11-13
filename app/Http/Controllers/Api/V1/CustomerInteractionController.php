@@ -15,8 +15,7 @@ class CustomerInteractionController extends BaseApiController
 {
     public function __construct(
         protected RefundService $refundService
-    ) {
-    }
+    ) {}
 
     public function submitReview(Request $request): JsonResponse
     {
@@ -80,4 +79,3 @@ class CustomerInteractionController extends BaseApiController
         return $this->respondSuccess($returns);
     }
 }
-

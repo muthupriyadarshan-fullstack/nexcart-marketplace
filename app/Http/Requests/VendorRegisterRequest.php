@@ -29,4 +29,3 @@ class VendorRegisterRequest extends FormRequest
         ];
     }
 }
-

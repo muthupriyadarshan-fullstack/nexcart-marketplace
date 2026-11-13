@@ -32,4 +32,3 @@ class StockMovement extends Model
         return $this->belongsTo(Inventory::class);
     }
 }
-

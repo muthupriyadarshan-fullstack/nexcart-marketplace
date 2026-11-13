@@ -63,4 +63,3 @@ class ProductDetailResource extends JsonResource
         ];
     }
 }
-

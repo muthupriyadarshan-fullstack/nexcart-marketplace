@@ -51,4 +51,3 @@ class ReturnRequest extends Model
         return $this->hasOne(Refund::class, 'return_id');
     }
 }
-

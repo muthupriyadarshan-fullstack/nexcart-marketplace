@@ -57,4 +57,3 @@ class Cart extends Model
         return max(0.00, round($this->subtotal - $this->discount_amount, 2));
     }
 }
-

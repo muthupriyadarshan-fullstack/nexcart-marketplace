@@ -10,7 +10,6 @@ use App\Models\CouponUsage;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Payment;
-use App\Models\ProductVariant;
 use App\Models\Shipment;
 use App\Models\User;
 use Exception;
@@ -23,8 +22,7 @@ class CheckoutService
         protected InventoryReservationService $inventoryService,
         protected CommissionService $commissionService,
         protected PaymentGatewayInterface $paymentGateway,
-    ) {
-    }
+    ) {}
 
     /**
      * Atomically reserve stock, calculate vendor splits, and initialize payment.
@@ -73,7 +71,7 @@ class CheckoutService
             }
         }
 
-        $orderNumber = 'NEX-' . date('Ymd') . '-' . strtoupper(Str::random(6));
+        $orderNumber = 'NEX-'.date('Ymd').'-'.strtoupper(Str::random(6));
 
         // Prepare inventory reservation mapping: variantId => requestedQty
         $variantQuantities = [];
@@ -224,7 +222,7 @@ class CheckoutService
                     'order_id' => $order->id,
                     'store_id' => $storeId,
                 ], [
-                    'tracking_number' => 'TRK-' . date('Ymd') . '-' . strtoupper(Str::random(6)),
+                    'tracking_number' => 'TRK-'.date('Ymd').'-'.strtoupper(Str::random(6)),
                     'carrier' => 'Blue Dart Express',
                     'status' => 'pending',
                 ]);
@@ -257,4 +255,3 @@ class CheckoutService
         });
     }
 }
-

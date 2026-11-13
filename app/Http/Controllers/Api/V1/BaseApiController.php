@@ -35,4 +35,3 @@ class BaseApiController extends Controller
         return $this->respondError($message, 403);
     }
 }
-

@@ -11,7 +11,9 @@ use Illuminate\Support\Str;
 class RazorpayPaymentGateway implements PaymentGatewayInterface
 {
     protected string $keyId;
+
     protected string $keySecret;
+
     protected string $baseUrl = 'https://api.razorpay.com/v1';
 
     public function __construct()
@@ -26,7 +28,8 @@ class RazorpayPaymentGateway implements PaymentGatewayInterface
 
         // If in test/local environment without real network credentials, return standard Razorpay response format
         if (str_starts_with($this->keyId, 'rzp_test_nexcart') || app()->environment('testing')) {
-            $generatedId = 'order_' . Str::random(14);
+            $generatedId = 'order_'.Str::random(14);
+
             return [
                 'id' => $generatedId,
                 'entity' => 'order',
@@ -55,7 +58,7 @@ class RazorpayPaymentGateway implements PaymentGatewayInterface
             }
 
             Log::error('Razorpay order creation failed', ['response' => $response->body()]);
-            throw new Exception('Payment gateway order creation failed: ' . $response->body());
+            throw new Exception('Payment gateway order creation failed: '.$response->body());
         } catch (Exception $e) {
             Log::error('Razorpay exception', ['message' => $e->getMessage()]);
             throw $e;
@@ -65,7 +68,7 @@ class RazorpayPaymentGateway implements PaymentGatewayInterface
     public function verifySignature(string $orderId, string $paymentId, string $signature): bool
     {
         // Calculate HMAC-SHA256 according to Razorpay specification
-        $expectedSignature = hash_hmac('sha256', $orderId . '|' . $paymentId, $this->keySecret);
+        $expectedSignature = hash_hmac('sha256', $orderId.'|'.$paymentId, $this->keySecret);
 
         if (hash_equals($expectedSignature, $signature)) {
             return true;
@@ -73,7 +76,7 @@ class RazorpayPaymentGateway implements PaymentGatewayInterface
 
         // Allow simulated test signature in testing / demo mode
         if (app()->environment('testing') || str_starts_with($this->keyId, 'rzp_test_nexcart')) {
-            if ($signature === 'test_mock_signature_' . $orderId || $signature === 'demo_signature_valid') {
+            if ($signature === 'test_mock_signature_'.$orderId || $signature === 'demo_signature_valid') {
                 return true;
             }
         }
@@ -104,7 +107,7 @@ class RazorpayPaymentGateway implements PaymentGatewayInterface
 
         if (str_starts_with($this->keyId, 'rzp_test_nexcart') || app()->environment('testing')) {
             return [
-                'id' => 'rfnd_' . Str::random(14),
+                'id' => 'rfnd_'.Str::random(14),
                 'entity' => 'refund',
                 'amount' => $amountInPaise,
                 'currency' => 'INR',
@@ -122,4 +125,3 @@ class RazorpayPaymentGateway implements PaymentGatewayInterface
         return $response->json();
     }
 }
-

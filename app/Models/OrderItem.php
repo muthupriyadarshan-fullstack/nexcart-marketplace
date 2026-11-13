@@ -68,4 +68,3 @@ class OrderItem extends Model
         return $this->hasOne(ReturnRequest::class);
     }
 }
-

@@ -76,4 +76,3 @@ class AddressController extends BaseApiController
         return $this->respondSuccess(null, 'Address deleted.');
     }
 }
-

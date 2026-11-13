@@ -20,4 +20,3 @@ class ReturnSubmitRequest extends FormRequest
         ];
     }
 }
-

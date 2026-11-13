@@ -15,8 +15,7 @@ class CheckoutController extends BaseApiController
 {
     public function __construct(
         protected CheckoutService $checkoutService
-    ) {
-    }
+    ) {}
 
     /**
      * Lock inventory, calculate vendor splits, and initialize payment.
@@ -86,4 +85,3 @@ class CheckoutController extends BaseApiController
         return $this->respondSuccess(new OrderResource($order));
     }
 }
-

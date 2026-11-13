@@ -13,8 +13,7 @@ class SupportController extends BaseApiController
 {
     public function __construct(
         protected RefundService $refundService
-    ) {
-    }
+    ) {}
 
     /**
      * Customer support order lookup
@@ -68,6 +67,7 @@ class SupportController extends BaseApiController
                     $request->user(),
                     $validated['notes']
                 );
+
                 return $this->respondSuccess($refund, 'Return approved and refund issued.');
             } catch (Exception $e) {
                 return $this->respondError($e->getMessage(), 422);
@@ -84,4 +84,3 @@ class SupportController extends BaseApiController
         return $this->respondSuccess($returnRequest, 'Return request rejected.');
     }
 }
-

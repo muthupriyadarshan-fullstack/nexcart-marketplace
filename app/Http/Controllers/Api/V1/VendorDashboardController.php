@@ -116,6 +116,7 @@ class VendorDashboardController extends BaseApiController
     public function getStore(Request $request): JsonResponse
     {
         $store = $this->getVendorStore($request);
+
         return $this->respondSuccess($store);
     }
 
@@ -167,7 +168,7 @@ class VendorDashboardController extends BaseApiController
         $product = DB::transaction(function () use ($request, $store) {
             $slug = Str::slug($request->name);
             if (Product::where('slug', $slug)->exists()) {
-                $slug .= '-' . Str::random(5);
+                $slug .= '-'.Str::random(5);
             }
 
             $product = Product::create([
@@ -227,7 +228,7 @@ class VendorDashboardController extends BaseApiController
                 // Create default variant
                 $variant = ProductVariant::create([
                     'product_id' => $product->id,
-                    'sku' => 'SKU-' . strtoupper(Str::random(8)),
+                    'sku' => 'SKU-'.strtoupper(Str::random(8)),
                     'title' => 'Default',
                     'price' => $product->base_price,
                     'attributes' => ['option' => 'Standard'],
@@ -459,4 +460,3 @@ class VendorDashboardController extends BaseApiController
         return $this->respondSuccess($payout, 'Payout request submitted successfully.', 201);
     }
 }
-

@@ -12,9 +12,7 @@ class AbandonedCartNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
-    public function __construct(public Cart $cart)
-    {
-    }
+    public function __construct(public Cart $cart) {}
 
     public function via(object $notifiable): array
     {
@@ -43,4 +41,3 @@ class AbandonedCartNotification extends Notification implements ShouldQueue
         ];
     }
 }
-

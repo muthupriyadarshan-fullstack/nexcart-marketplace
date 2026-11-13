@@ -76,7 +76,7 @@ class AuthController extends BaseApiController
 
             $slug = Str::slug($request->store_name);
             if (Store::where('slug', $slug)->exists()) {
-                $slug .= '-' . Str::random(4);
+                $slug .= '-'.Str::random(4);
             }
 
             Store::create([
@@ -145,4 +145,3 @@ class AuthController extends BaseApiController
         return $this->respondSuccess(new UserResource($user), 'Profile updated successfully.');
     }
 }
-

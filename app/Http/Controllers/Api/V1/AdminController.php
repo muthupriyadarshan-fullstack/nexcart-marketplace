@@ -25,8 +25,7 @@ class AdminController extends BaseApiController
 {
     public function __construct(
         protected RefundService $refundService
-    ) {
-    }
+    ) {}
 
     /**
      * Admin Dashboard Global Analytics
@@ -191,6 +190,7 @@ class AdminController extends BaseApiController
     public function categories(): JsonResponse
     {
         $categories = Category::with(['parent', 'children'])->withCount('products')->get();
+
         return $this->respondSuccess($categories);
     }
 
@@ -206,7 +206,7 @@ class AdminController extends BaseApiController
 
         $validated['slug'] = Str::slug($validated['name']);
         if (Category::where('slug', $validated['slug'])->exists()) {
-            $validated['slug'] .= '-' . Str::random(4);
+            $validated['slug'] .= '-'.Str::random(4);
         }
 
         $category = Category::create($validated);
@@ -250,6 +250,7 @@ class AdminController extends BaseApiController
     public function coupons(): JsonResponse
     {
         $coupons = Coupon::latest()->get();
+
         return $this->respondSuccess($coupons);
     }
 
@@ -324,6 +325,7 @@ class AdminController extends BaseApiController
     public function payouts(): JsonResponse
     {
         $payouts = Payout::with('store.vendor.profile')->latest()->paginate(15);
+
         return $this->respondSuccess($payouts);
     }
 
@@ -352,7 +354,7 @@ class AdminController extends BaseApiController
     public function auditLogs(): JsonResponse
     {
         $logs = AuditLog::with('user')->latest()->paginate(25);
+
         return $this->respondSuccess($logs);
     }
 }
-

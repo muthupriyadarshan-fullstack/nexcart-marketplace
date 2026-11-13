@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Models\Order;
 use App\Models\Payment;
 use App\Models\PaymentWebhook;
 use Exception;
@@ -14,8 +13,7 @@ class WebhookHandlerService
     public function __construct(
         protected CheckoutService $checkoutService,
         protected InventoryReservationService $inventoryService,
-    ) {
-    }
+    ) {}
 
     /**
      * Verify incoming Razorpay webhook signature and process idempotently.
@@ -34,7 +32,7 @@ class WebhookHandlerService
             }
         }
 
-        $eventId = $payload['event_id'] ?? $payload['id'] ?? ('evt_' . md5($rawPayload));
+        $eventId = $payload['event_id'] ?? $payload['id'] ?? ('evt_'.md5($rawPayload));
         $eventType = $payload['event'] ?? 'unknown';
 
         // Idempotency check: Have we processed this event already?
@@ -106,9 +104,8 @@ class WebhookHandlerService
                 'processed' => true,
             ];
         } catch (Exception $e) {
-            Log::error('Webhook processing exception: ' . $e->getMessage(), ['event_id' => $eventId]);
+            Log::error('Webhook processing exception: '.$e->getMessage(), ['event_id' => $eventId]);
             throw $e;
         }
     }
 }
-

@@ -83,4 +83,3 @@ test('role permissions block regular customer from vendor portal', function () {
 
     $response->assertStatus(403);
 });
-
